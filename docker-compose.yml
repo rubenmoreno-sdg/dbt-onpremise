@@ -1,37 +1,20 @@
 version: '3.8'
 
-# NOTE: The `sqlserver` service is optional. Many deployments use a client-hosted
-# SQL Server instance (managed externally). If you use an external/client SQL Server,
-# remove or comment out the `sqlserver` service below and update `dbt/profiles.yml`
-# to point `host` to the client's server.
-services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver_local
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=${SQL_PASSWORD}
-    ports:
-      - "1433:1433"
-    volumes:
-      - sqlserver_data:/var/opt/mssql
+# On-Premises dbt Deployment
+# SQL Server is remote (10.200.207.194/TBXSQLAPPDES)
+# Only the dbt container is deployed locally
 
+services:
   dbt:
     build:
       context: .
       dockerfile: Dockerfile.dbt
-    container_name: dbt_core_local
+    container_name: dbt_core_onpremise
     volumes:
       - ./dbt:/usr/app/dbt_project
     environment:
       - DBT_PROFILES_DIR=/usr/app/dbt_project
-      - DBT_ENV_SECRET_PASSWORD=${SQL_PASSWORD}
-    # If you are connecting to an external/client SQL Server, remove the
-    # `depends_on` entry so dbt does not wait for the local sqlserver container.
-    depends_on:
-      - sqlserver
+      - CLIENT_SQL_PASSWORD=${CLIENT_SQL_PASSWORD}
     command: tail -f /dev/null
     stdin_open: true
     tty: true
-volumes:
-  sqlserver_data:

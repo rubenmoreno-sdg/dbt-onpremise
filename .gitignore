@@ -1,8 +1,28 @@
+# Environment variables (credentials)
 .env
+.env.local
+
+# Python
 __pycache__/
 *.pyc
-.vscode/
-.DS_Store
-proyecto-dbt_sqlserver_data/
+*.pyo
+*.egg-info/
+.Python
+
+# dbt artifacts
 dbt/target/
-.gitignore
+dbt/logs/
+dbt/dbt_packages/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backup files
+README_BACKUP.md
