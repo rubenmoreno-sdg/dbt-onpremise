@@ -1,0 +1,36 @@
+default:
+  outputs:
+    dev:
+      type: sqlserver
+      driver: 'ODBC Driver 18 for SQL Server'
+      # 'sqlserver' is the Docker service name when running a local SQL Server container.
+      # If you are connecting to the client's/server-hosted SQL Server, replace this
+      # with the client's hostname or IP address (for example: dbserver.company.local).
+      host: sqlserver
+      port: 1433
+      user: sa
+      password: "{{ env_var('DBT_ENV_SECRET_PASSWORD') }}"
+      database: master
+      schema: dbo
+      encrypt: true
+      trust_cert: true
+  target: dev
+
+# Example: client-hosted SQL Server configuration (optional)
+# Uncomment and adjust the values to connect to a centrally hosted SQL Server
+# instead of the local Docker `sqlserver` service.
+#
+#default:
+#  outputs:
+#    dev:
+#      type: sqlserver
+#      driver: 'ODBC Driver 18 for SQL Server'
+#      host: 10.200.207.194\\TBXSQLAPPDES    # IP del servidor / instancia proporcionada por el cliente
+#      port: 1433
+#      user: your_username
+#      password: "{{ env_var('CLIENT_SQL_PASSWORD') }}"  # guardar la contraseña en una variable de entorno
+#      database: master
+#      schema: dbo
+#      encrypt: true
+#      trust_cert: true
+#  target: dev
